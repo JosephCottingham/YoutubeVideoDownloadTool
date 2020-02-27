@@ -16,6 +16,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="MERGE" />
   </component>
   <component name="ProjectId" id="1YHPKEIwFcD0BErb8JABIbev4zz" />
   <component name="ProjectViewState">
@@ -117,6 +118,10 @@
       <screen x="0" y="0" width="1920" height="1053" />
     </state>
     <state x="1168" y="255" width="426" height="577" key="#com.intellij.ide.macro.MacrosDialog/0.0.1920.1053@0.0.1920.1053" timestamp="1582598344711" />
+    <state x="597" y="131" width="724" height="799" key="CommitChangelistDialog2" timestamp="1582770375599">
+      <screen x="0" y="0" width="1920" height="1053" />
+    </state>
+    <state x="597" y="131" width="724" height="799" key="CommitChangelistDialog2/0.0.1920.1053@0.0.1920.1053" timestamp="1582770375599" />
     <state x="1552" y="313" width="426" height="477" key="FileChooserDialogImpl" timestamp="1582613927151">
       <screen x="384" y="0" width="1920" height="1080" />
     </state>
@@ -146,10 +151,18 @@
       <screen x="0" y="0" width="1920" height="1053" />
     </state>
     <state x="467" y="169" width="986" height="723" key="SettingsEditor/0.0.1920.1053@0.0.1920.1053" timestamp="1582750853111" />
+    <state x="558" y="270" width="802" height="521" key="Vcs.Push.Dialog.v2" timestamp="1582770378115">
+      <screen x="0" y="0" width="1920" height="1053" />
+    </state>
+    <state x="558" y="270" width="802" height="521" key="Vcs.Push.Dialog.v2/0.0.1920.1053@0.0.1920.1053" timestamp="1582770378115" />
     <state x="645" y="354" width="555" height="449" key="com.intellij.ide.util.TipDialog" timestamp="1582769804128">
       <screen x="0" y="0" width="1920" height="1053" />
     </state>
     <state x="645" y="354" width="555" height="449" key="com.intellij.ide.util.TipDialog/0.0.1920.1053@0.0.1920.1053" timestamp="1582769804128" />
     <state x="1029" y="363" key="com.intellij.ide.util.TipDialog/384.0.1920.1080/0.0.384.512@384.0.1920.1080" timestamp="1582695146089" />
+    <state x="758" y="454" width="404" height="153" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1582770399118">
+      <screen x="0" y="0" width="1920" height="1053" />
+    </state>
+    <state x="758" y="454" width="404" height="153" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1053@0.0.1920.1053" timestamp="1582770399118" />
   </component>
 </project>
