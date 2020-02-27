@@ -6,6 +6,7 @@ from tkinter import filedialog as fd
 from pathlib import Path
 from threading import Thread
 import subprocess
+import YoutubeVideoDownloadTool
 
 # TODO Check/Install FFMPEG
 
@@ -16,13 +17,10 @@ except ImportError:
 
 try:
     import ttk
-
     py3 = False
 except ImportError:
     import tkinter.ttk as ttk
-
     py3 = True
-
 
 def set_Tk_var():
     global selectedButton
@@ -30,6 +28,7 @@ def set_Tk_var():
 
 
 def downloadProgress(stream=None, chunk=None, file_handle=None, remaining=None):
+    # calculate and run progress bar
     downloadProgressVar = (100 * (videoSize - remaining)) / videoSize
     w.TProgressbar1.configure(value=downloadProgressVar)
     w.ErrorLabel.configure(
@@ -51,8 +50,9 @@ def audioConvert(stream=None, file_path=None):
 
 
 def fileSelect():
+    # clear and refill entry
     w.DownloadEntry.delete(0, tk.END)
-    w.DownloadEntry.insert(0, fd.askdirectory())
+    w.DownloadEntry.insert(0, fd.askdirectory(initialdir=str(Path.home())))
 
 
 def setDefaultDir():
@@ -60,11 +60,19 @@ def setDefaultDir():
 
 
 def startDownload(URL, DownloadLoc):
+    # to properly manage interface and download systems
     thread = Thread(target=downloadThread, args=(URL, DownloadLoc))
     thread.start()
 
 
 def downloadThread(URL, DownloadLoc):
+    # disabled to prevent running infinitely many threads
+    w.DownloadEntry.configure(state="disabled")
+    w.URLEntry.configure(state="disabled")
+    w.FileButton.configure(state="disabled")
+    w.DownloadButton.configure(state="disabled")
+    w.OnlyAudio.configure(state="disabled")
+    w.VideoAudio.configure(state="disabled")
     # Progressbar needs to start at 0
     w.TProgressbar1["value"] = 0
     # unable to pass due to lib configuration
@@ -91,12 +99,12 @@ def downloadThread(URL, DownloadLoc):
             try:
                 # only mp4 streams therefore, they need to be converted to mp3 though callback
                 vid = YouTube(urlTxt, on_progress_callback=downloadProgress,
-                              on_complete_callback=audioConvert).streams.filter(only_audio=True).first()
+                              on_complete_callback=audioConvert).streams.get_lowest_resolution()
                 videoSize = vid.filesize
                 vid.download(output_path=DownloadTxt)
             # within try to catch invalid links
             except:
-                w.ErrorLabel.configure(text='Error: Invalid URL: File #{0}'.format(videoNum))
+                w.ErrorLabel.configure(text='Error: Invalid URL: File #{0} of {1} files'.format(videoNum, videoTotalNum))
         elif "playlist" in urlTxt:
             videoTotalNum = len(Playlist(urlTxt).video_urls)
             videoNum = 0
@@ -105,11 +113,11 @@ def downloadThread(URL, DownloadLoc):
                     videoNum += 1
                     # only mp4 streams therefore, they need to be converted to mp3 though callback
                     vid = YouTube(videoURL, on_progress_callback=downloadProgress,
-                                  on_complete_callback=audioConvert).streams.filter(only_audio=True).first()
+                                  on_complete_callback=audioConvert).streams.get_lowest_resolution()
                     videoSize = vid.filesize
                     vid.download(output_path=DownloadTxt)
                 except:
-                    w.ErrorLabel.configure(text='Error: Invalid URL: File #{0}'.format(videoNum))
+                    w.ErrorLabel.configure(text='Error: Invalid URL: File #{0} of {1} files'.format(videoNum, videoTotalNum))
         else:
             w.ErrorLabel.configure(text='Error: Invalid URL')
     else:
@@ -123,7 +131,7 @@ def downloadThread(URL, DownloadLoc):
                 videoSize = vid.filesize
                 vid.download(output_path=DownloadTxt)
             except:
-                w.ErrorLabel.configure(text='Error: Invalid URL: File #{0}'.format(videoNum))
+                w.ErrorLabel.configure(text='Error: Invalid URL: File #{0} of {1} files'.format(videoNum, videoTotalNum))
         elif "playlist" in urlTxt:
             videoTotalNum = len(Playlist(urlTxt).video_urls)
             videoNum = 0
@@ -135,9 +143,16 @@ def downloadThread(URL, DownloadLoc):
                     videoSize = vid.filesize
                     vid.download(output_path=DownloadTxt)
                 except:
-                    w.ErrorLabel.configure(text='Error: Invalid URL: File #{0}'.format(videoNum))
+                    w.ErrorLabel.configure(text='Error: Invalid URL: File #{0} of {1} files'.format(videoNum, videoTotalNum))
         else:
             w.ErrorLabel.configure(text='Error: Invalid URL')
+    # set to normal to allow second run
+    w.DownloadEntry.configure(state="normal")
+    w.URLEntry.configure(state="normal")
+    w.FileButton.configure(state="normal")
+    w.DownloadButton.configure(state="normal")
+    w.OnlyAudio.configure(state="normal")
+    w.VideoAudio.configure(state="normal")
     sys.stdout.flush()
 
 
@@ -149,13 +164,11 @@ def init(top, gui, *args, **kwargs):
 
 
 def destroy_window():
-    # Function which closes the window.
+    # Closes the window
     global top_level
     top_level.destroy()
     top_level = None
 
 
 if __name__ == '__main__':
-    import YoutubeVideoDownloadTool
-
     YoutubeVideoDownloadTool.vp_start_gui()

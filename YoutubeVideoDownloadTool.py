@@ -20,7 +20,6 @@ import YoutubeVideoDownloadTool_support
 
 
 def vp_start_gui():
-    '''Starting point when module is the main routine.'''
     global val, w, root
     root = tk.Tk()
     YoutubeVideoDownloadTool_support.set_Tk_var()
@@ -33,7 +32,6 @@ w = None
 
 
 def create_Toplevel1(root, *args, **kwargs):
-    '''Starting point when module is imported by another program.'''
     global w, w_win, rt
     rt = root
     w = tk.Toplevel(root)
@@ -51,8 +49,7 @@ def destroy_Toplevel1():
 
 class Toplevel1:
     def __init__(self, top=None):
-        '''This class configures and populates the toplevel window.
-           top is the toplevel containing window.'''
+        # class configures and populates the toplevel window
         _bgcolor = '#d9d9d9'  # X11 color: 'gray85'
         _fgcolor = '#000000'  # X11 color: 'black'
         _compcolor = '#d9d9d9'  # X11 color: 'gray85'
