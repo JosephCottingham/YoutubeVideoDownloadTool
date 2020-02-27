@@ -9,12 +9,15 @@ except ImportError:
 
 try:
     import ttk
+
     py3 = False
 except ImportError:
     import tkinter.ttk as ttk
+
     py3 = True
 
 import YoutubeVideoDownloadTool_support
+
 
 def vp_start_gui():
     '''Starting point when module is the main routine.'''
@@ -25,21 +28,26 @@ def vp_start_gui():
     YoutubeVideoDownloadTool_support.init(root, top)
     root.mainloop()
 
+
 w = None
+
+
 def create_Toplevel1(root, *args, **kwargs):
     '''Starting point when module is imported by another program.'''
     global w, w_win, rt
     rt = root
-    w = tk.Toplevel (root)
+    w = tk.Toplevel(root)
     YoutubeVideoDownloadTool_support.set_Tk_var()
-    top = Toplevel1 (w)
+    top = Toplevel1(w)
     YoutubeVideoDownloadTool_support.init(w, top, *args, **kwargs)
     return (w, top)
+
 
 def destroy_Toplevel1():
     global w
     w.destroy()
     w = None
+
 
 class Toplevel1:
     def __init__(self, top=None):
@@ -47,16 +55,16 @@ class Toplevel1:
            top is the toplevel containing window.'''
         _bgcolor = '#d9d9d9'  # X11 color: 'gray85'
         _fgcolor = '#000000'  # X11 color: 'black'
-        _compcolor = '#d9d9d9' # X11 color: 'gray85'
-        _ana1color = '#d9d9d9' # X11 color: 'gray85'
-        _ana2color = '#ececec' # Closest X11 color: 'gray92'
+        _compcolor = '#d9d9d9'  # X11 color: 'gray85'
+        _ana1color = '#d9d9d9'  # X11 color: 'gray85'
+        _ana2color = '#ececec'  # Closest X11 color: 'gray92'
         self.style = ttk.Style()
         if sys.platform == "win32":
             self.style.theme_use('winnative')
-        self.style.configure('.',background=_bgcolor)
-        self.style.configure('.',foreground=_fgcolor)
-        self.style.configure('.',font="TkDefaultFont")
-        self.style.map('.',background=[('selected', _compcolor), ('active',_ana2color)])
+        self.style.configure('.', background=_bgcolor)
+        self.style.configure('.', foreground=_fgcolor)
+        self.style.configure('.', font="TkDefaultFont")
+        self.style.map('.', background=[('selected', _compcolor), ('active', _ana2color)])
 
         top.geometry("1333x459+1721+809")
         top.minsize(1, 1)
@@ -106,7 +114,8 @@ class Toplevel1:
         self.OnlyAudio.configure(variable=YoutubeVideoDownloadTool_support.selectedButton)
         self.OnlyAudio.configure(text='''Only Audio''')
 
-        downloadWithArg = partial(YoutubeVideoDownloadTool_support.startDownload, URL=self.URLEntry, DownloadLoc=self.DownloadEntry)
+        downloadWithArg = partial(YoutubeVideoDownloadTool_support.startDownload, URL=self.URLEntry,
+                                  DownloadLoc=self.DownloadEntry)
         self.DownloadButton = ttk.Button(top)
         self.DownloadButton.place(relx=0.69, rely=0.538, height=73, width=244)
         self.DownloadButton.configure(command=downloadWithArg)
@@ -123,11 +132,13 @@ class Toplevel1:
         BAR_COLOR = 'green'
         style = ttk.Style()
         style.theme_use('clam')
-        style.configure("green.Horizontal.TProgressbar", troughcolor=TROUGH_COLOR, bordercolor=TROUGH_COLOR, background=BAR_COLOR, lightcolor=BAR_COLOR, darkcolor=BAR_COLOR)
+        style.configure("green.Horizontal.TProgressbar", troughcolor=TROUGH_COLOR, bordercolor=TROUGH_COLOR,
+                        background=BAR_COLOR, lightcolor=BAR_COLOR, darkcolor=BAR_COLOR)
 
         self.TProgressbar1 = ttk.Progressbar(top)
         self.TProgressbar1.place(relx=0.008, rely=0.763, relwidth=0.983, relheight=0.0, height=40)
-        self.TProgressbar1.configure(orient="horizontal", length=100, mode="determinate", style="green.Horizontal.TProgressbar")
+        self.TProgressbar1.configure(orient="horizontal", length=100, mode="determinate",
+                                     style="green.Horizontal.TProgressbar")
 
         self.ErrorLabel = ttk.Label(top)
         self.ErrorLabel.place(relx=0.38, rely=0.893, height=34, width=881)
@@ -138,11 +149,7 @@ class Toplevel1:
         self.ErrorLabel.configure(justify='center')
         self.ErrorLabel.configure(text='''No Current Errors''')
 
+
 if __name__ == '__main__':
     thread = Thread(target=vp_start_gui)
     thread.start()
-
-
-
-
-
