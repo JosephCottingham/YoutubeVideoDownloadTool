@@ -34,6 +34,7 @@ w = None
 def create_Toplevel1(root, *args, **kwargs):
     global w, w_win, rt
     rt = root
+    # w stores the gui
     w = tk.Toplevel(root)
     YoutubeVideoDownloadTool_support.set_Tk_var()
     top = Toplevel1(w)
@@ -148,5 +149,6 @@ class Toplevel1:
 
 
 if __name__ == '__main__':
+
     thread = Thread(target=vp_start_gui)
     thread.start()

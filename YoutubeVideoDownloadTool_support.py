@@ -37,7 +37,7 @@ def downloadProgress(stream=None, chunk=None, file_handle=None, remaining=None):
 
 def audioConvert(stream=None, file_path=None):
     filePath = file_path.name
-    #remove extension (.mp4)
+    # remove extension (.mp4)
     fineIn = filePath.split(".")
     mp4 = "'%s'.mp4" % fineIn[0]
     nameSec = filePath.split('/')
@@ -95,7 +95,7 @@ def downloadThread(URL, DownloadLoc):
         if "watch" in urlTxt:
             videoNum = 1
             videoTotalNum = 1
-            #within try to catch invalid links
+            # within try to catch invalid links
             try:
                 # only mp4 streams therefore, they need to be converted to mp3 though callback
                 vid = YouTube(urlTxt, on_progress_callback=downloadProgress,
@@ -155,20 +155,20 @@ def downloadThread(URL, DownloadLoc):
     w.VideoAudio.configure(state="normal")
     sys.stdout.flush()
 
-
+# setup support
 def init(top, gui, *args, **kwargs):
     global w, top_level, root
     w = gui
     top_level = top
     root = top
 
-
+# allows window to be closed
 def destroy_window():
     # Closes the window
     global top_level
     top_level.destroy()
     top_level = None
 
-
 if __name__ == '__main__':
+    # Starts the the GUI
     YoutubeVideoDownloadTool.vp_start_gui()
