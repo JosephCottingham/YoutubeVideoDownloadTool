@@ -1,10 +1,13 @@
 import os
 import sys
+
+import platform
 from pytube import YouTube
 from pytube import Playlist
 from tkinter import filedialog as fd
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 from threading import Thread
+from moviepy.editor import VideoFileClip
 import subprocess
 import YoutubeVideoDownloadTool
 
@@ -34,21 +37,44 @@ def downloadProgress(stream=None, chunk=None, file_handle=None, remaining=None):
     w.ErrorLabel.configure(
         text='{:00.0f}% downloaded of file #{:0d} of {:0d} files'.format(downloadProgressVar, videoNum, videoTotalNum))
 
+# def convertProgress(current, n_frames):
+#     # calculate and run progress bar
+#     downloadProgressVar = (100 * (n_frames - current)) / n_frames
+#     w.TProgressbar1.configure(value=downloadProgressVar)
+#     w.ErrorLabel.configure(
+#         text='{:00.0f}% Converted of file #{:0d} of {:0d} files'.format(downloadProgressVar, videoNum, videoTotalNum))
 
 def audioConvert(stream=None, file_path=None):
-    filePath = file_path.name
-    # remove extension (.mp4)
-    fineIn = filePath.split(".")
-    mp4 = "'%s'.mp4" % fineIn[0]
-    nameSec = filePath.split('/')
-    name = nameSec[-1].split('.')
-    out = Dloc + "/" + name[0]
-    mp3 = "'%s'.mp3" % out
-    ffmpeg = ('ffmpeg -i %s ' % mp4 + mp3)
-    subprocess.call(ffmpeg, shell=True)
-    os.remove(mp4)
-
-
+    try:
+        filePath = file_path.name
+        # remove extension (.mp4)
+        findIn = filePath.split(".")
+        mp4 = "%s.mp4" % findIn[0]
+        nameSec = filePath.split('/')[-1].split('\\')
+        name = nameSec[-1].split('.')
+        print(name)
+        out = Dloc + "/" + name[-2]
+        mp3 = "%s.mp3" % out
+        # ffmpeg = ('ffmpeg -i %s ' % mp4 + mp3)
+        # subprocess.call(ffmpeg, shell=True)
+        mp4Path = Path(mp4)
+        mp3Path = Path(mp3)
+        if (platform.system() == 'Windows'):
+            mp4Path = str(PureWindowsPath(mp4Path))
+            mp3Path = str(PureWindowsPath(mp3Path))
+            print(type(mp4Path))
+            print("Windows")
+        print(str(mp4Path))
+        video = VideoFileClip(mp4Path)
+        print(mp3Path)
+        print(type(mp4Path))
+        video.audio.write_audiofile(filename=mp3Path, verbose=False, logger=None)
+        # os.remove(mp4Path)
+    # , progress_callback=convertProgress
+    except Exception as e:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        print(exc_type, fname, exc_tb.tb_lineno)
 def fileSelect():
     # clear and refill entry
     w.DownloadEntry.delete(0, tk.END)
