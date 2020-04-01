@@ -7,8 +7,7 @@ from pytube import Playlist
 from tkinter import filedialog as fd
 from pathlib import Path, PureWindowsPath
 from threading import Thread
-from moviepy.editor import VideoFileClip
-import subprocess
+from moviepy.video.io.VideoFileClip import VideoFileClip
 import YoutubeVideoDownloadTool
 
 # TODO Check/Install FFMPEG
