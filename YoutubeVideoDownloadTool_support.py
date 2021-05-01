@@ -1,6 +1,6 @@
 import os
 import sys
-
+import traceback
 import platform
 from pytube import YouTube
 from pytube import Playlist
@@ -29,10 +29,11 @@ def set_Tk_var():
     selectedButton = tk.IntVar(0)
 
 
-def downloadProgress(stream=None, chunk=None, file_handle=None, remaining=None):
+def downloadProgress(stream=None, chunk=None, bytes_remaining=None):
     # calculate and run progress bar
-    downloadProgressVar = (100 * (videoSize - remaining)) / videoSize
+    downloadProgressVar = (100 * (videoSize - bytes_remaining)) / videoSize
     w.TProgressbar1.configure(value=downloadProgressVar)
+    print('{:00.0f}% downloaded of file #{:0d} of {:0d} files'.format(downloadProgressVar, videoNum, videoTotalNum))
     w.ErrorLabel.configure(
         text='{:00.0f}% downloaded of file #{:0d} of {:0d} files'.format(downloadProgressVar, videoNum, videoTotalNum))
 
@@ -45,11 +46,10 @@ def downloadProgress(stream=None, chunk=None, file_handle=None, remaining=None):
 
 def audioConvert(stream=None, file_path=None):
     try:
-        filePath = file_path.name
         # remove extension (.mp4)
-        findIn = filePath.split(".")
+        findIn = file_path.split(".")
         mp4 = "%s.mp4" % findIn[0]
-        nameSec = filePath.split('/')[-1].split('\\')
+        nameSec = file_path.split('/')[-1].split('\\')
         name = nameSec[-1].split('.')
         print(name)
         out = Dloc + "/" + name[-2]
@@ -64,7 +64,7 @@ def audioConvert(stream=None, file_path=None):
             print(type(mp4Path))
             print("Windows")
         print(str(mp4Path))
-        video = VideoFileClip(mp4Path)
+        video = VideoFileClip(str(mp4Path))
         print(mp3Path)
         print(type(mp4Path))
         video.audio.write_audiofile(filename=mp3Path, verbose=False, logger=None)
@@ -128,7 +128,9 @@ def downloadThread(URL, DownloadLoc):
                 videoSize = vid.filesize
                 vid.download(output_path=DownloadTxt)
             # within try to catch invalid links
-            except:
+            except Exception as e:
+                print(str(e))
+                traceback.print_exc() 
                 w.ErrorLabel.configure(text='Error: Invalid URL: File #{0} of {1} files'.format(videoNum, videoTotalNum))
         elif "playlist" in urlTxt:
             videoTotalNum = len(Playlist(urlTxt).video_urls)
@@ -155,7 +157,8 @@ def downloadThread(URL, DownloadLoc):
                 vid = YouTube(urlTxt, on_progress_callback=downloadProgress).streams.get_highest_resolution()
                 videoSize = vid.filesize
                 vid.download(output_path=DownloadTxt)
-            except:
+            except Exception as e:
+                print(str(e))
                 w.ErrorLabel.configure(text='Error: Invalid URL: File #{0} of {1} files'.format(videoNum, videoTotalNum))
         elif "playlist" in urlTxt:
             videoTotalNum = len(Playlist(urlTxt).video_urls)
